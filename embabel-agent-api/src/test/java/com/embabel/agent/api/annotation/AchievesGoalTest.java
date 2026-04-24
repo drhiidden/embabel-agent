@@ -15,6 +15,7 @@
  */
 package com.embabel.agent.api.annotation;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import java.lang.reflect.Method;
 import static org.junit.jupiter.api.Assertions.*;
@@ -34,10 +35,15 @@ class AchievesGoalTest {
     public void customValuesMethod() {}
 
     @Test
+    @DisplayName("Should verify default values of AchievesGoal annotation")
     void shouldHaveDefaultValues() throws NoSuchMethodException {
+        // Arrange
         Method method = this.getClass().getMethod("defaultValuesMethod");
+        
+        // Act
         AchievesGoal annotation = method.getAnnotation(AchievesGoal.class);
 
+        // Assert
         assertNotNull(annotation, "Annotation should be present");
         assertEquals("Test default goal", annotation.description());
         assertEquals(0.0, annotation.value());
@@ -53,10 +59,15 @@ class AchievesGoalTest {
     }
 
     @Test
+    @DisplayName("Should retain custom values of AchievesGoal annotation")
     void shouldRetainCustomValues() throws NoSuchMethodException {
+        // Arrange
         Method method = this.getClass().getMethod("customValuesMethod");
+        
+        // Act
         AchievesGoal annotation = method.getAnnotation(AchievesGoal.class);
 
+        // Assert
         assertNotNull(annotation, "Annotation should be present");
         assertEquals("Custom goal", annotation.description());
         assertEquals(1.5, annotation.value());
@@ -68,3 +79,4 @@ class AchievesGoalTest {
         assertEquals("customExport", export.name());
     }
 }
+

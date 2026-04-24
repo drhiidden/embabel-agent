@@ -38,9 +38,13 @@ class TrackedTest {
     @Test
     @DisplayName("Should have default values for @Tracked annotation")
     void shouldHaveDefaultValues() throws NoSuchMethodException {
+        // Arrange
         Method method = this.getClass().getMethod("defaultTrackedMethod");
+        
+        // Act
         Tracked annotation = method.getAnnotation(Tracked.class);
 
+        // Assert
         assertNotNull(annotation, "Annotation should be present");
         assertEquals("", annotation.value());
         assertEquals(TrackType.CUSTOM, annotation.type());
@@ -50,9 +54,13 @@ class TrackedTest {
     @Test
     @DisplayName("Should retain custom values for @Tracked annotation")
     void shouldRetainCustomValues() throws NoSuchMethodException {
+        // Arrange
         Method method = this.getClass().getMethod("customTrackedMethod");
+        
+        // Act
         Tracked annotation = method.getAnnotation(Tracked.class);
 
+        // Assert
         assertNotNull(annotation, "Annotation should be present");
         assertEquals("customTracker", annotation.value());
         assertEquals(TrackType.VALIDATION, annotation.type());

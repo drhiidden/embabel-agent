@@ -15,6 +15,7 @@
  */
 package com.embabel.agent.api.annotation;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -32,9 +33,15 @@ class ExportTest {
     public void customExportMethod() {}
 
     @Test
+    @DisplayName("Should verify default values of Export annotation")
     void shouldHaveDefaultValues() throws NoSuchMethodException {
-        Export annotation = this.getClass().getMethod("defaultExportMethod").getAnnotation(Export.class);
+        // Arrange
+        java.lang.reflect.Method method = this.getClass().getMethod("defaultExportMethod");
+        
+        // Act
+        Export annotation = method.getAnnotation(Export.class);
 
+        // Assert
         assertNotNull(annotation, "Annotation should be present");
         assertEquals("", annotation.name());
         assertFalse(annotation.remote());
@@ -43,9 +50,15 @@ class ExportTest {
     }
 
     @Test
+    @DisplayName("Should retain custom values of Export annotation")
     void shouldRetainCustomValues() throws NoSuchMethodException {
-        Export annotation = this.getClass().getMethod("customExportMethod").getAnnotation(Export.class);
+        // Arrange
+        java.lang.reflect.Method method = this.getClass().getMethod("customExportMethod");
+        
+        // Act
+        Export annotation = method.getAnnotation(Export.class);
 
+        // Assert
         assertNotNull(annotation, "Annotation should be present");
         assertEquals("customName", annotation.name());
         assertTrue(annotation.remote());
@@ -53,3 +66,4 @@ class ExportTest {
         assertArrayEquals(new Class<?>[]{String.class, Integer.class}, annotation.startingInputTypes());
     }
 }
+

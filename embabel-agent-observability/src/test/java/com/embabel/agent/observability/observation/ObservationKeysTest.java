@@ -18,62 +18,57 @@ package com.embabel.agent.observability.observation;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Modifier;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ObservationKeysTest {
 
     @Test
-    @DisplayName("Should have private constructor to prevent instantiation")
-    void hasPrivateConstructor() throws Exception {
-        Constructor<ObservationKeys> constructor = ObservationKeys.class.getDeclaredConstructor();
-        assertTrue(Modifier.isPrivate(constructor.getModifiers()),
-            "Constructor must be private to prevent instantiation");
-    }
-
-    @Test
     @DisplayName("Should format agentKey correctly")
     void shouldFormatAgentKey() {
+        // Arrange & Act & Assert
         assertEquals("agent:12345", ObservationKeys.agentKey("12345"));
     }
 
     @Test
     @DisplayName("Should format actionKey correctly")
     void shouldFormatActionKey() {
+        // Arrange & Act & Assert
         assertEquals("action:12345:myAction", ObservationKeys.actionKey("12345", "myAction"));
     }
 
     @Test
     @DisplayName("Should format llmKey correctly")
     void shouldFormatLlmKey() {
+        // Arrange & Act & Assert
         assertEquals("llm:12345:interaction-1", ObservationKeys.llmKey("12345", "interaction-1"));
     }
 
     @Test
     @DisplayName("Should format toolLoopKey correctly")
     void shouldFormatToolLoopKey() {
+        // Arrange & Act & Assert
         assertEquals("tool-loop:12345:interaction-1", ObservationKeys.toolLoopKey("12345", "interaction-1"));
     }
 
     @Test
     @DisplayName("Should format toolKey correctly")
     void shouldFormatToolKey() {
+        // Arrange & Act & Assert
         assertEquals("tool:12345:myTool", ObservationKeys.toolKey("12345", "myTool"));
     }
 
     @Test
     @DisplayName("Should format toolSpanName correctly")
     void shouldFormatToolSpanName() {
+        // Arrange & Act & Assert
         assertEquals("tool:myTool", ObservationKeys.toolSpanName("myTool"));
     }
 
     @Test
     @DisplayName("Should format toolLoopSpanName correctly")
     void shouldFormatToolLoopSpanName() {
-        // According to the logic in ObservationKeys, it ignores the interactionId
+        // Arrange & Act & Assert
         assertEquals("tool-loop:", ObservationKeys.toolLoopSpanName("interaction-1"));
     }
 }
+

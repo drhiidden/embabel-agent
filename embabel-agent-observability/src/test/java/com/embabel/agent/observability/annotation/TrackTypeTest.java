@@ -26,8 +26,10 @@ class TrackTypeTest {
     @Test
     @DisplayName("Should contain all defined enumeration values")
     void shouldContainAllEnumValues() {
+        // Arrange & Act
         TrackType[] types = TrackType.values();
         
+        // Assert
         assertNotNull(types);
         assertEquals(6, types.length);
         
