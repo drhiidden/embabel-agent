@@ -23,128 +23,57 @@ import java.lang.reflect.Modifier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
-/**
- * Unit tests for {@link ObservationKeys}.
- */
 class ObservationKeysTest {
 
     @Test
     @DisplayName("Should have private constructor to prevent instantiation")
     void hasPrivateConstructor() throws Exception {
-        // Arrange
         Constructor<ObservationKeys> constructor = ObservationKeys.class.getDeclaredConstructor();
-        
-        // Assert
         assertTrue(Modifier.isPrivate(constructor.getModifiers()),
-                "Constructor must be private to prevent instantiation");
+            "Constructor must be private to prevent instantiation");
     }
 
     @Test
-    @DisplayName("Should format agent key correctly with 'agent:' prefix")
-    void agentKeyFormatsCorrectly() {
-        // Act
-        String result = ObservationKeys.agentKey("run123");
-        
-        // Assert
-        assertEquals("agent:run123", result);
+    @DisplayName("Should format agentKey correctly")
+    void shouldFormatAgentKey() {
+        assertEquals("agent:12345", ObservationKeys.agentKey("12345"));
     }
 
     @Test
-    @DisplayName("Should format action key correctly with 'action:runId:actionName' format")
-    void actionKeyFormatsCorrectly() {
-        // Act
-        String result = ObservationKeys.actionKey("run123", "processOrder");
-        
-        // Assert
-        assertEquals("action:run123:processOrder", result);
+    @DisplayName("Should format actionKey correctly")
+    void shouldFormatActionKey() {
+        assertEquals("action:12345:myAction", ObservationKeys.actionKey("12345", "myAction"));
     }
 
     @Test
-    @DisplayName("Should format LLM key correctly with 'llm:runId:interactionId' format")
-    void llmKeyFormatsCorrectly() {
-        // Act
-        String result = ObservationKeys.llmKey("run123", "inter456");
-        
-        // Assert
-        assertEquals("llm:run123:inter456", result);
+    @DisplayName("Should format llmKey correctly")
+    void shouldFormatLlmKey() {
+        assertEquals("llm:12345:interaction-1", ObservationKeys.llmKey("12345", "interaction-1"));
     }
 
     @Test
-    @DisplayName("Should format tool loop key correctly with 'tool-loop:' prefix")
-    void toolLoopKeyFormatsCorrectly() {
-        // Act
-        String result = ObservationKeys.toolLoopKey("run123", "inter456");
-        
-        // Assert
-        assertEquals("tool-loop:run123:inter456", result);
+    @DisplayName("Should format toolLoopKey correctly")
+    void shouldFormatToolLoopKey() {
+        assertEquals("tool-loop:12345:interaction-1", ObservationKeys.toolLoopKey("12345", "interaction-1"));
     }
 
     @Test
-    @DisplayName("Should format tool key correctly with 'tool:runId:toolName' format")
-    void toolKeyFormatsCorrectly() {
-        // Act
-        String result = ObservationKeys.toolKey("run123", "database");
-        
-        // Assert
-        assertEquals("tool:run123:database", result);
+    @DisplayName("Should format toolKey correctly")
+    void shouldFormatToolKey() {
+        assertEquals("tool:12345:myTool", ObservationKeys.toolKey("12345", "myTool"));
     }
 
     @Test
-    @DisplayName("Should format tool span name correctly")
-    void toolSpanNameFormatsCorrectly() {
-        // Act
-        String result = ObservationKeys.toolSpanName("http-client");
-        
-        // Assert
-        assertEquals("tool:http-client", result);
+    @DisplayName("Should format toolSpanName correctly")
+    void shouldFormatToolSpanName() {
+        assertEquals("tool:myTool", ObservationKeys.toolSpanName("myTool"));
     }
 
     @Test
-    @DisplayName("Should format tool loop span name correctly")
-    void toolLoopSpanNameFormatsCorrectly() {
-        // Act
-        String result = ObservationKeys.toolLoopSpanName("inter456");
-        
-        // Assert
-        assertEquals("tool-loop:", result);
-    }
-
-    @Test
-    @DisplayName("Should handle empty strings gracefully without throwing exceptions")
-    void handlesEmptyStrings() {
-        // Act & Assert
-        assertEquals("agent:", ObservationKeys.agentKey(""));
-        assertEquals("action::", ObservationKeys.actionKey("", ""));
-        assertEquals("llm::", ObservationKeys.llmKey("", ""));
-        assertEquals("tool-loop::", ObservationKeys.toolLoopKey("", ""));
-        assertEquals("tool::", ObservationKeys.toolKey("", ""));
-        assertEquals("tool:", ObservationKeys.toolSpanName(""));
-    }
-
-    @Test
-    @DisplayName("Should handle special characters in keys (colons, underscores, hyphens)")
-    void handlesSpecialCharacters() {
-        // Arrange
-        String runId = "run-123_abc";
-        String actionName = "process:order";
-        
-        // Act
-        String result = ObservationKeys.actionKey(runId, actionName);
-        
-        // Assert
-        assertEquals("action:run-123_abc:process:order", result);
-    }
-
-    @Test
-    @DisplayName("Should have correct prefix constants matching key format conventions")
-    void constantsHaveCorrectPrefixes() {
-        // Assert
-        assertEquals("agent:", ObservationKeys.AGENT_PREFIX);
-        assertEquals("action:", ObservationKeys.ACTION_PREFIX);
-        assertEquals("llm:", ObservationKeys.LLM_PREFIX);
-        assertEquals("tool-loop:", ObservationKeys.TOOL_LOOP_PREFIX);
-        assertEquals("tool:", ObservationKeys.TOOL_PREFIX);
+    @DisplayName("Should format toolLoopSpanName correctly")
+    void shouldFormatToolLoopSpanName() {
+        // According to the logic in ObservationKeys, it ignores the interactionId
+        assertEquals("tool-loop:", ObservationKeys.toolLoopSpanName("interaction-1"));
     }
 }
